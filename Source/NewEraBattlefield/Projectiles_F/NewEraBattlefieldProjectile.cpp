@@ -8,7 +8,7 @@ ANewEraBattlefieldProjectile::ANewEraBattlefieldProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	CollisionComp->InitSphereRadius(5.0f);
+	CollisionComp->InitSphereRadius(1.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComp->OnComponentHit.AddDynamic(this, &ANewEraBattlefieldProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
@@ -24,7 +24,7 @@ ANewEraBattlefieldProjectile::ANewEraBattlefieldProjectile()
 	ProjectileMovement->UpdatedComponent = CollisionComp;
 	ProjectileMovement->InitialSpeed = 3000.f;
 	ProjectileMovement->MaxSpeed = 3000.f;
-	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bRotationFollowsVelocity = false;
 	ProjectileMovement->bShouldBounce = true;
 
 	// Die after 3 seconds by default

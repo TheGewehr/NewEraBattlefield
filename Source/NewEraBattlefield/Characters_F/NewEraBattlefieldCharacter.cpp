@@ -73,6 +73,7 @@ void ANewEraBattlefieldCharacter::SetupPlayerInputComponent(UInputComponent* Pla
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANewEraBattlefieldCharacter::Look);
+
 	}
 	else
 	{
