@@ -2,8 +2,8 @@
 
 
 #include "TP_WeaponComponent.h"
-#include "NewEraBattlefieldCharacter.h"
-#include "NewEraBattlefieldProjectile.h"
+#include "..\Characters_F/NewEraBattlefieldCharacter.h"
+#include "..\Projectiles_F/NewEraBattlefieldProjectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
