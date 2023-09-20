@@ -5,8 +5,21 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputActionValue.h"
 
 #include "InfantryCharacter.generated.h"
+
+//UENUM()
+//enum InfantrySoldierState
+//{
+//	Standing UMETA(DisplayName = "Standing"),
+//	Prone UMETA(DisplayName = "Prone"),
+//	LyingFaceDown UMETA(DisplayName = "LyingFaceDown"),
+//	Agonizing UMETA(DisplayName = "Agonizing"),
+//	Dead UMETA(DisplayName = "Dead"),
+//};
 
 UCLASS()
 class NEWERABATTLEFIELD_API AInfantryCharacter : public ACharacter
@@ -14,22 +27,45 @@ class NEWERABATTLEFIELD_API AInfantryCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+
 	AInfantryCharacter();
 
-private:
+	virtual void Tick(float DeltaTime) override;
+
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:	
+
+	
+
+	// Camera
+
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* FPSCameraComponent;
 
+	// Soldier State
+
+	//UPROPERTY(EditAnywhere,  Category = "InfantrySoldierState")
+	//InfantrySoldierState infantrySoldierState = InfantrySoldierState::Standing;
+
+	// Input
+
+	UPROPERTY(EditAnywhere,  Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* InfantryMappingContext;
+
+	UPROPERTY(EditAnywhere,  Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere,  Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* MoveAction;
+
+
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void Move(const FInputActionValue& Value);
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void Look(const FInputActionValue& Value);
 
 };
