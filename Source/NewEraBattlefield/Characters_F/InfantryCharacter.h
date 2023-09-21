@@ -11,15 +11,16 @@
 
 #include "InfantryCharacter.generated.h"
 
-//UENUM()
-//enum InfantrySoldierState
-//{
-//	Standing UMETA(DisplayName = "Standing"),
-//	Prone UMETA(DisplayName = "Prone"),
-//	LyingFaceDown UMETA(DisplayName = "LyingFaceDown"),
-//	Agonizing UMETA(DisplayName = "Agonizing"),
-//	Dead UMETA(DisplayName = "Dead"),
-//};
+
+UENUM()
+enum InfantrySoldierState
+{
+	Standing UMETA(DisplayName = "Standing"),
+	Prone UMETA(DisplayName = "Prone"),
+	LyingFaceDown UMETA(DisplayName = "LyingFaceDown"),
+	Agonizing UMETA(DisplayName = "Agonizing"),
+	Dead UMETA(DisplayName = "Dead"),
+};
 
 UCLASS()
 class NEWERABATTLEFIELD_API AInfantryCharacter : public ACharacter
