@@ -19,11 +19,17 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	PrimaryWeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Primary Weapon"));
 	SecondaryWeaponComponent = CreateDefaultSubobject<UWeaponComponent>(TEXT("Secondary Weapon"));
 	PrimaryWeaponComponent->SetOwner(this);
-	SecondaryWeaponComponent->SetOwner(this);
+	//SecondaryWeaponComponent->SetOwner(this);
 	SecondaryWeaponComponent->Deactivate();
 
 	// Set the mesh to not bee seen by the owner
 	GetMesh()->SetOwnerNoSee(true);
+
+	// Create a CameraComponent	
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 	
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
@@ -34,11 +40,7 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 	
-	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
+	
 }
 
 // Called when the game starts or when spawned
@@ -46,6 +48,15 @@ void AFirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SelectedWeaponComponent = PrimaryWeaponComponent;
+
+	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
+
+	AWeaponBase* Weapon = PrimaryWeaponComponent->GetWeapon();
+	if(Weapon)
+	{
+		Weapon->GetMesh()->SetupAttachment(this->GetMesh1P(), FName(TEXT("GripPoint")));
+		Weapon->SetOwner(this);
+	}	
 
 }
 

@@ -37,13 +37,14 @@ void UWeaponComponent::AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* W
 {
 	Weapon = WeaponToAttach;
 	FirstPersonCharacter = Owner;
-
+	
 	if(Weapon && FirstPersonCharacter)
 	{
-		const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
+		if(FirstPersonCharacter->GetMesh1P()->DoesSocketExist(FName(TEXT("GripPoint"))))
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Socket Found"));
+		}
 		
-		Weapon->GetMesh()->AttachToComponent(FirstPersonCharacter->GetMesh(), AttachmentRules, FName(TEXT("GripPoint")));
-		Weapon->SetOwner(FirstPersonCharacter);
 	}
 }
 
