@@ -88,8 +88,8 @@ public:
 	
 private:
 	
-	void FireHitScan();
-	void FireProjectile();
+	virtual void FireHitScan();
+	virtual void FireProjectile();
 
 public:
 	UFUNCTION(BlueprintCallable)
