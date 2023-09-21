@@ -41,7 +41,8 @@ void UWeaponComponent::AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* W
 	if(Weapon && FirstPersonCharacter)
 	{
 		const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
-		Weapon->AttachToComponent(FirstPersonCharacter->GetMesh(), AttachmentRules, FName(TEXT("GripPoint")));
+		
+		Weapon->GetMesh()->AttachToComponent(FirstPersonCharacter->GetMesh(), AttachmentRules, FName(TEXT("GripPoint")));
 		Weapon->SetOwner(FirstPersonCharacter);
 	}
 }

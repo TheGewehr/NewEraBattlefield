@@ -7,7 +7,7 @@
 #include "FirstPersonCharacter.generated.h"
 
 class UWeaponComponent;
-
+class UCameraComponent;
 UCLASS()
 class NEWERABATTLEFIELD_API AFirstPersonCharacter : public ACharacter
 {
@@ -33,8 +33,15 @@ public:
 	void PickUp();
 	virtual void Jump() override;
 	void Reload();
-
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; } 
 public:
+
+	UPROPERTY(VisibleDefaultsOnly,Category=Mesh)
+	USkeletalMeshComponent* Mesh1P  = nullptr;
+
+	UPROPERTY(VisibleDefaultsOnly, Category=Camera)
+	UCameraComponent* FirstPersonCameraComponent = nullptr;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category=Weapon)
 	UWeaponComponent* PrimaryWeaponComponent = nullptr;
 	

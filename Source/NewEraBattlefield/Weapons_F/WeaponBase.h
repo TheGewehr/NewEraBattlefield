@@ -97,7 +97,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	const FWeaponData& GetWeaponData() const { return WeaponData; } 
-	
+	USkeletalMeshComponent* GetMesh() const { return Mesh; }
 private:
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	USceneComponent* RootSceneComponent = nullptr;
