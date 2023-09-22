@@ -87,7 +87,15 @@ void AWeaponBase::FireProjectile()
 {
 	if(Projectile)
 	{
+		// Get the spawn location and rotation in front of the weapon
+		FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * SpawnOffset;
+		FRotator SpawnRotation = GetActorRotation();
+
+		// Spawn the projectile at the calculated location and rotation
+		//TSubclassOf<AProjectileBase>* SpawnedProjectile = GetWorld()->SpawnActor<TSubclassOf<AProjectileBase>>(Projectile, SpawnLocation, SpawnRotation, FActorSpawnParameters());
+		//AMyBlueprintActor* SpawnedActor = GetWorld()->SpawnActor<AMyBlueprintActor>(AMyBlueprintActor::StaticClass(), SpawnLocation, SpawnRotation);
 		
+		AProjectileBase* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileBase>(Projectile,SpawnLocation, SpawnRotation, FActorSpawnParameters());
 	}
 }
 

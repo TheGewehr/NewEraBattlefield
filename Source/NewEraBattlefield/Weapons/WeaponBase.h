@@ -121,7 +121,7 @@ private:
 	USkeletalMeshComponent* Mesh = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	AProjectileBase* Projectile = nullptr;
+	TSubclassOf<AProjectileBase> Projectile;
 	
 	// Weapon data should be initialized when creating the blueprint
 	UPROPERTY(EditAnywhere,  BlueprintReadWrite, Category=Weapon, meta = (AllowPrivateAccess = "true"))
@@ -135,6 +135,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	int TotalAmmoAmount; // Total reserve ammo for reloading mags
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	float SpawnOffset = 0.0f;
+
 	
 	float TimeBetweenShoots = 0.f;
 };
