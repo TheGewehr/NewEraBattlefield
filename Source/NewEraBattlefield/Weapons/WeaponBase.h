@@ -137,7 +137,7 @@ private:
 	int TotalAmmoAmount; // Total reserve ammo for reloading mags
 
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	float SpawnOffset = 0.0f;
+	float SpawnOffset = 1.0f;
 
 	
 	float TimeBetweenShoots = 0.f;
