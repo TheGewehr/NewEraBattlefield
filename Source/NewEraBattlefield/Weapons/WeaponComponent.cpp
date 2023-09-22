@@ -3,7 +3,7 @@
 
 #include "WeaponComponent.h"
 #include "WeaponBase.h"
-#include "NewEraBattlefield/Characters_F/FirstPersonCharacter.h"
+#include "NewEraBattlefield/Characters/FirstPersonCharacter.h"
 
 // Sets default values for this component's properties
 UWeaponComponent::UWeaponComponent()

@@ -5,7 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "NewEraBattlefield/Characters_F/FirstPersonCharacter.h"
+#include "NewEraBattlefield/Characters/FirstPersonCharacter.h"
 
 AFirstPersonPlayerController::AFirstPersonPlayerController()
 {
