@@ -7,13 +7,8 @@
 #include "NewEraBattlefield/Characters/FirstPersonCharacter.h"
 #include "NewEraBattlefield/Components/FirstPersonHealthComponent.h"
 
-void AFirstPersonHUD::BeginPlay()
+void AFirstPersonHUD::BindCallbacks()
 {
-	Super::BeginPlay();
-
-	MainWidget = CreateWidget<UFirstPersonHUDWidget>(GetGameInstance(), MainWidgetClass);
-	MainWidget->AddToViewport(99);
-
 	// Setup callbacks
 	Pawn = Cast<AFirstPersonCharacter>(GetOwningPawn());
 	if(Pawn)
@@ -22,7 +17,16 @@ void AFirstPersonHUD::BeginPlay()
 		Pawn->OnWeaponFire.AddDynamic(this, &AFirstPersonHUD::OnWeaponFired);
 		Pawn->OnWeaponReload.AddDynamic(this, &AFirstPersonHUD::OnWeaponReload);
 		Pawn->OnWeaponChanged.AddDynamic(this, &AFirstPersonHUD::OnWeaponChanged);
+		Pawn->SelectedWeaponComponent->SelectWeapon();
 	}
+}
+
+void AFirstPersonHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	MainWidget = CreateWidget<UFirstPersonHUDWidget>(GetGameInstance(), MainWidgetClass);
+	MainWidget->AddToViewport(99);
 }
 
 void AFirstPersonHUD::OnHealthChanged(float CurrentHealth, float MaxHealth)

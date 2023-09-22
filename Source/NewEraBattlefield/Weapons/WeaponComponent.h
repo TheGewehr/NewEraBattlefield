@@ -18,6 +18,7 @@ class NEWERABATTLEFIELD_API UWeaponComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UWeaponComponent();
+	void CreateDefaultWeapon();
 
 protected:
 	// Called when the game starts
@@ -40,7 +41,9 @@ public:
 	
 	FORCEINLINE bool HasWeapon() const { return Weapon ? true : false; }
 	FORCEINLINE AWeaponBase* GetWeapon() const { return Weapon; }
-	
+
+	UFUNCTION(BlueprintCallable)
+	void SelectWeapon();
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeaponBase> StartingWeapon;

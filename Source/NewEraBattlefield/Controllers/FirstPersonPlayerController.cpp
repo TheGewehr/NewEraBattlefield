@@ -29,9 +29,7 @@ void AFirstPersonPlayerController::SetupInputMapping() const
 void AFirstPersonPlayerController::SetupPlayerReference()
 {
 	FirstPersonCharacter = Cast<AFirstPersonCharacter>(GetPawn());
-	
-	if(!FirstPersonCharacter)
-		UE_LOG(LogFPSController, Error, TEXT("Couldn't find the player Pawn!"));
+	//FirstPersonCharacter->PlayerController = this;
 }
 
 void AFirstPersonPlayerController::BeginPlay()

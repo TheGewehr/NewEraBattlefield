@@ -18,6 +18,7 @@ class NEWERABATTLEFIELD_API AFirstPersonHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	void BindCallbacks();
 	virtual void BeginPlay() override;
 	
 	UFUNCTION(BlueprintCallable)
