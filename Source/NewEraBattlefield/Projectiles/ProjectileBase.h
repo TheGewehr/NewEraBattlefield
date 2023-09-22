@@ -25,8 +25,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float Damage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
-	float SpeedInMetersPerSecond;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	//float SpeedInMetersPerSecond;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float WeightInKg;
@@ -35,6 +35,11 @@ public:
 	AProjectileBase();
 
 	virtual void BeginPlay() override;
+
+private:
+
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Projectile")
+	float SpeedInMetersPerSecond;
 };
 
 /*

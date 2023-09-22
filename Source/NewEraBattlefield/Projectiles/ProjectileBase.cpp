@@ -15,7 +15,7 @@ AProjectileBase::AProjectileBase()
 	
 	// Initialize properties
 	Damage = 100.0f;
-	SpeedInMetersPerSecond = 900.0f; // 900 m/s
+	SpeedInMetersPerSecond = 90.0f; // 900 m/s
 	WeightInKg = 0.01f; // 10 grams in kg
 
 	// Convert speed to cm/s for Unreal Engine
