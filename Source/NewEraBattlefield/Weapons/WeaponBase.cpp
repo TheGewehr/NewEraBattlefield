@@ -63,5 +63,9 @@ void AWeaponBase::FireHitScan()
 
 void AWeaponBase::FireProjectile()
 {
+	if(Projectile)
+	{
+		
+	}
 }
 
