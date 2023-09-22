@@ -29,7 +29,7 @@ void AFirstPersonPlayerController::SetupInputMapping() const
 void AFirstPersonPlayerController::SetupPlayerReference()
 {
 	FirstPersonCharacter = Cast<AFirstPersonCharacter>(GetPawn());
-	FirstPersonCharacter->PlayerController = this;
+	//FirstPersonCharacter->PlayerController = this;
 }
 
 void AFirstPersonPlayerController::BeginPlay()
