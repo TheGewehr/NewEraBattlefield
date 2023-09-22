@@ -39,7 +39,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void Reload();
 	
-	FORCEINLINE bool HasWeapon() const { return Weapon ? true : false; }
+	FORCEINLINE bool HasWeapon() const { return Weapon != nullptr; }
 	FORCEINLINE AWeaponBase* GetWeapon() const { return Weapon; }
 
 	UFUNCTION(BlueprintCallable)

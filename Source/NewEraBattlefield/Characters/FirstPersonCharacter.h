@@ -9,7 +9,7 @@
 #include "FirstPersonCharacter.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnWeaponUpdate, int, CurrentAmmo, int, TotalAmmo);
+DECLARE_DYNAMIC_DELEGATE_TwoParams(FOnWeaponUpdate, int, CurrentAmmo, int, TotalAmmo);
 
 class UWeaponComponent;
 class UCameraComponent;
@@ -31,7 +31,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	
+
+	virtual void NotifyControllerChanged() override;	
 	// Player Actions
 	void Move(const FVector2D& Movement);
 	void Look(const FVector2D& Look);
@@ -45,7 +46,7 @@ public:
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	UFUNCTION(BlueprintCallable)
-	bool HasRifle() const { return SelectedWeaponComponent->HasWeapon(); }
+	bool HasRifle() const { return SelectedWeaponComponent != nullptr ? SelectedWeaponComponent->HasWeapon() : false; }
 
 	UFUNCTION(BlueprintCallable)
 	const FWeaponData& GetCurrentWeaponData() const { return SelectedWeaponComponent->GetWeapon()->GetWeaponData(); }
@@ -68,15 +69,12 @@ public:
 	UPROPERTY()
 	UWeaponComponent* SelectedWeaponComponent = nullptr;
 
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FOnWeaponUpdate OnWeaponChanged;
 
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FOnWeaponUpdate OnWeaponFire;
 
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FOnWeaponUpdate OnWeaponReload;
-
-	UPROPERTY()
-	class AFirstPersonPlayerController* PlayerController = nullptr;
 };

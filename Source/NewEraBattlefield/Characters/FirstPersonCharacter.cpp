@@ -72,12 +72,11 @@ void AFirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	SetupWeaponAttachments();
-	
+
+
 	SelectedWeaponComponent = PrimaryWeaponComponent;
-	PrimaryWeaponComponent->CreateDefaultWeapon();
 	SecondaryWeaponComponent->CreateDefaultWeapon();
-	
-	Cast<AFirstPersonHUD>(PlayerController->GetHUD())->BindCallbacks();
+	PrimaryWeaponComponent->CreateDefaultWeapon();
 }
 
 // Called every frame
@@ -85,6 +84,24 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AFirstPersonCharacter::NotifyControllerChanged()
+{
+	Super::NotifyControllerChanged();
+
+	if(const AFirstPersonPlayerController* PlayerController = Cast<AFirstPersonPlayerController>(GetController()))
+	{
+		if(AFirstPersonHUD* HUD = Cast<AFirstPersonHUD>(PlayerController->GetHUD()))
+		{
+			
+
+			
+			
+		
+				
+		}
+	}
 }
 
 void AFirstPersonCharacter::Move(const FVector2D& Movement)

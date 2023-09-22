@@ -11,8 +11,6 @@ UWeaponComponent::UWeaponComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
-
-	
 }
 
 
@@ -48,7 +46,10 @@ void UWeaponComponent::Fire()
 	if(!Weapon)
 		return;
 	if(Weapon->Fire())
-		FirstPersonCharacter->OnWeaponFire.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
+	{
+		if(!FirstPersonCharacter->OnWeaponFire.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
+			UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponFire but not function was bound!"));
+	}
 }
 
 void UWeaponComponent::Reload()
@@ -57,7 +58,10 @@ void UWeaponComponent::Reload()
 		return;
 
 	if(Weapon->Reload())
-		FirstPersonCharacter->OnWeaponReload.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
+	{
+		if(!FirstPersonCharacter->OnWeaponReload.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
+			UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponReload but not function was bound!"));
+	}
 }
 
 void UWeaponComponent::SelectWeapon()
@@ -65,6 +69,7 @@ void UWeaponComponent::SelectWeapon()
 	if(!FirstPersonCharacter || !Weapon)
 		return;
 	
-	FirstPersonCharacter->OnWeaponChanged.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
+	if(!FirstPersonCharacter->OnWeaponChanged.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
+		UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponChanged but not function was bound!"));
 }
 
