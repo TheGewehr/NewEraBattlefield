@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Sound/SoundCue.h"
+#include "../Projectiles_F/ProjectileBase.h"
 #include "WeaponBase.generated.h"
 
 UENUM()
@@ -104,6 +105,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Mesh = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	AProjectileBase* Projectile = nullptr;
 	
 	// Weapon data should be initialized when creating the blueprint
 	UPROPERTY(EditAnywhere,  BlueprintReadWrite, Category=Weapon, meta = (AllowPrivateAccess = "true"))
