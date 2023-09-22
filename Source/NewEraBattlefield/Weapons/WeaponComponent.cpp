@@ -16,12 +16,16 @@ UWeaponComponent::UWeaponComponent()
 }
 
 
+void UWeaponComponent::CreateDefaultWeapon()
+{
+	Weapon = GetWorld()->SpawnActor<AWeaponBase>(StartingWeapon);
+	AttachWeapon(FirstPersonCharacter, Weapon);
+}
+
 // Called when the game starts
 void UWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	Weapon = GetWorld()->SpawnActor<AWeaponBase>(StartingWeapon);
-	AttachWeapon(FirstPersonCharacter, Weapon);
 }
 
 
@@ -37,15 +41,6 @@ void UWeaponComponent::AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* W
 {
 	Weapon = WeaponToAttach;
 	FirstPersonCharacter = Owner;
-	
-	if(Weapon && FirstPersonCharacter)
-	{
-		if(FirstPersonCharacter->GetMesh1P()->DoesSocketExist(FName(TEXT("GripPoint"))))
-		{
-			UE_LOG(LogTemp,Warning,TEXT("Socket Found"));
-		}
-		
-	}
 }
 
 void UWeaponComponent::Fire()
@@ -63,5 +58,13 @@ void UWeaponComponent::Reload()
 
 	if(Weapon->Reload())
 		FirstPersonCharacter->OnWeaponReload.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
+}
+
+void UWeaponComponent::SelectWeapon()
+{
+	if(!FirstPersonCharacter || !Weapon)
+		return;
+	
+	FirstPersonCharacter->OnWeaponChanged.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
 }
 
