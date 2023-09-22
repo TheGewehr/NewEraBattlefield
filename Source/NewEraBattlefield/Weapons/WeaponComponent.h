@@ -7,7 +7,6 @@
 #include "Components/ActorComponent.h"
 #include "WeaponComponent.generated.h"
 
-
 class AFirstPersonCharacter;
 class AWeaponBase;
 
@@ -30,12 +29,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION(BlueprintCallable, Category= "Weapon")
+	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* WeaponToAttach);
 
-	UFUNCTION(BlueprintCallable, Category="Weapon")
+	UFUNCTION(BlueprintCallable, Category = Weapon)
 	void Fire();
 
+	UFUNCTION(BlueprintCallable, Category = Weapon)
+	void Reload();
+	
 	FORCEINLINE bool HasWeapon() const { return Weapon ? true : false; }
 	FORCEINLINE AWeaponBase* GetWeapon() const { return Weapon; }
 	

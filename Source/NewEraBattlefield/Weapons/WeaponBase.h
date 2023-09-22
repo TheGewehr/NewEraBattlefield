@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Sound/SoundCue.h"
-#include "../Projectiles_F/ProjectileBase.h"
+#include "../Projectiles/ProjectileBase.h"
 #include "WeaponBase.generated.h"
 
 UENUM()
@@ -63,6 +63,12 @@ struct FWeaponData
 	float Spread;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxClipSize;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxTotalAmmo;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundCue* FireSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -93,11 +99,19 @@ private:
 	virtual void FireProjectile();
 
 public:
+	// Attempts to fire the gun and returns the result
 	UFUNCTION(BlueprintCallable)
-	void Fire();
+	bool Fire();
 
 	UFUNCTION(BlueprintCallable)
+	bool Reload();
+	
+	UFUNCTION(BlueprintCallable)
 	const FWeaponData& GetWeaponData() const { return WeaponData; } 
+	uint32 GetCurrentAmmo() const { return CurrentAmmo; }
+	uint32 GetTotalAmmoAmount() const { return TotalAmmoAmount; }
+
+	
 	USkeletalMeshComponent* GetMesh() const { return Mesh; }
 private:
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
@@ -115,6 +129,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	bool IsFiring = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	int CurrentAmmo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	int TotalAmmoAmount; // Total reserve ammo for reloading mags
 	
 	float TimeBetweenShoots = 0.f;
 };

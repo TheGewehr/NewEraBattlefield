@@ -52,6 +52,16 @@ void UWeaponComponent::Fire()
 {
 	if(!Weapon)
 		return;
-	Weapon->Fire();
+	if(Weapon->Fire())
+		FirstPersonCharacter->OnWeaponFire.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
+}
+
+void UWeaponComponent::Reload()
+{
+	if(!Weapon)
+		return;
+
+	if(Weapon->Reload())
+		FirstPersonCharacter->OnWeaponReload.Broadcast(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount());
 }
 

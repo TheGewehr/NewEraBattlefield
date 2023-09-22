@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "NewEraBattlefield/Weapons/WeaponBase.h"
 #include "FirstPersonHUDWidget.generated.h"
 
 
@@ -15,13 +16,15 @@ class NEWERABATTLEFIELD_API UFirstPersonHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
-	void UpdateHealth(float CurrentHealth, float MaxHealth);
+	UFUNCTION(BlueprintNativeEvent)
+	void OnHealthUpdated(float CurrentHealth, float MaxHealth);
 
 	UFUNCTION(BlueprintNativeEvent)
-	void OnHealthUpdated();
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health)
-	float MaxHealth;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Health)
-	float CurrentHealth;
+	void OnWeaponFire(int CurrentAmmo);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnWeaponReload(int CurrentAmount, int TotalAmmoAmount);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnWeaponChange(const FWeaponData& WeaponData ,int CurrentAmount, int TotalAmount);
 };

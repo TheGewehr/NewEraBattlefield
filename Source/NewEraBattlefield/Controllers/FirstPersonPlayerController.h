@@ -7,7 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "FirstPersonPlayerController.generated.h"
 
-DECLARE_LOG_CATEGORY_CLASS(LogFPSController, Log, All)
+DECLARE_LOG_CATEGORY_CLASS(LogFPSController, Log, All);
 
 class UInputMappingContext;
 class UInputAction;

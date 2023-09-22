@@ -22,7 +22,8 @@ AWeaponBase::AWeaponBase()
 void AWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CurrentAmmo = WeaponData.MaxClipSize;
+	TotalAmmoAmount = WeaponData.MaxTotalAmmo;
 }
 
 // Called every frame
@@ -33,11 +34,12 @@ void AWeaponBase::Tick(float DeltaTime)
 	TimeBetweenShoots += DeltaTime;
 }
 
-void AWeaponBase::Fire()
+bool AWeaponBase::Fire()
 {
 	// Control weapon timing
 	if(TimeBetweenShoots < 1.f / WeaponData.FireRate)
-		return;
+		return false;
+	
 	// Reset the timing
 	TimeBetweenShoots = 0.f;
 
@@ -55,6 +57,26 @@ void AWeaponBase::Fire()
 	
 	if(WeaponData.MuzzleFlashEffect)
 		UGameplayStatics::SpawnEmitterAttached(WeaponData.MuzzleFlashEffect, Mesh, TEXT("Muzzle"));
+
+	return true;
+}
+
+bool AWeaponBase::Reload()
+{
+	// TODO: Wait the time
+	if(TotalAmmoAmount > 0)
+	{
+		TotalAmmoAmount -= WeaponData.MaxClipSize - CurrentAmmo;
+
+		if(TotalAmmoAmount >= WeaponData.MaxClipSize)	
+			CurrentAmmo = WeaponData.MaxClipSize;
+		else
+			CurrentAmmo = TotalAmmoAmount;
+		
+		return true;
+	}
+	
+	return false;
 }
 
 void AWeaponBase::FireHitScan()
