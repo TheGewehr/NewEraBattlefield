@@ -45,14 +45,23 @@ bool UWeaponComponent::Fire()
 {
 	if(!Weapon)
 		return false;
-	return Weapon->Fire();
+
+	// TODO: Add burst and automatic
+	switch (Weapon->GetWeaponData().Type)
+	{
+	case EWeaponType::WAutomatic: return Weapon->Fire();
+	case EWeaponType::WSingle: return Weapon->Fire();
+	case EWeaponType::WBurst: return false;
+	}
+
+	return false;
 }
 
 bool UWeaponComponent::Reload()
 {
 	if(!Weapon)
 		return false;
-	return Weapon->Reload();
+	return Weapon->RequestReload();
 }
 
 bool UWeaponComponent::SelectWeapon()

@@ -54,6 +54,7 @@ void AFirstPersonCharacter::SetupWeaponAttachments()
 	{
 		Weapon->SetOwner(this);
 
+		Weapon->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
 		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh(), AttachmentRules, FName(TEXT("GripPoint"))))
 			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
 		
@@ -63,7 +64,7 @@ void AFirstPersonCharacter::SetupWeaponAttachments()
 	if(AWeaponBase* Weapon = SecondaryWeaponComponent->GetWeapon())
 	{
 		Weapon->SetOwner(this);
-
+		Weapon->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
 		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh(), AttachmentRules, FName(TEXT("GripPoint"))))
 			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
 		

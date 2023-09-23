@@ -42,23 +42,24 @@ void AWeaponBase::Tick(float DeltaTime)
 
 bool AWeaponBase::Fire()
 {
+	// Check if the weapon has enough ammo
+	if(CurrentAmmo <= 0)
+		return false;
+	
 	// Control weapon timing
 	if(TimeBetweenShoots < 1.f / WeaponData.FireRate)
 		return false;
 	
-	// Reset the timing
+	// Reset the timing and subtract the ammo 
 	TimeBetweenShoots = 0.f;
-	DrawDebugCamera(GetWorld(), GetActorLocation(), GetActorRotation(), 90, 2, FColor::Red);
-	
 	CurrentAmmo--;
+	DrawDebugCamera(GetWorld(), GetActorLocation(), GetActorRotation(), 90, 2, FColor::Red);
 	
 	switch (WeaponData.FireType)
 	{
 	case EFireType::FHitScan: FireHitScan(); break;
 	case EFireType::FProjectile: FireProjectile(); break;
 	}
-
-	
 	
 	if(WeaponData.MuzzleFlashEffect)
 		UGameplayStatics::SpawnEmitterAttached(WeaponData.MuzzleFlashEffect, Mesh, TEXT("Muzzle"));
@@ -68,7 +69,6 @@ bool AWeaponBase::Fire()
 
 bool AWeaponBase::Reload()
 {
-	// TODO: Wait the time
 	if(TotalAmmoAmount > 0)
 	{
 		TotalAmmoAmount -= WeaponData.MaxClipSize - CurrentAmmo;
@@ -83,6 +83,12 @@ bool AWeaponBase::Reload()
 	
 	return false;
 }
+
+bool AWeaponBase::RequestReload()
+{
+	return ;
+}
+
 
 void AWeaponBase::FireHitScan()
 {
@@ -102,8 +108,8 @@ void AWeaponBase::FireProjectile()
 	if(Projectile)
 	{
 		// Get the spawn location and rotation in front of the weapon
-		FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * SpawnOffset;
-		FRotator SpawnRotation = GetActorRotation().Add(0.f, 90.f, 0.f) ;
+		const FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * SpawnOffset;
+		const FRotator SpawnRotation = GetActorRotation().Add(0.f, 90.f, 0.f) ;
 
 		// Spawn the projectile at the calculated location and rotation
 		//TSubclassOf<AProjectileBase>* SpawnedProjectile = GetWorld()->SpawnActor<TSubclassOf<AProjectileBase>>(Projectile, SpawnLocation, SpawnRotation, FActorSpawnParameters());

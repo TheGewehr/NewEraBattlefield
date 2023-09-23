@@ -9,6 +9,8 @@
 #include "../Projectiles/HitscanBase.h"
 #include "WeaponBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAction);
+
 UENUM()
 enum class EFireType
 {
@@ -106,6 +108,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool Reload();
+
+	UFUNCTION(BlueprintCallable)
+	bool RequestReload();
 	
 	UFUNCTION(BlueprintCallable)
 	const FWeaponData& GetWeaponData() const { return WeaponData; } 
@@ -135,6 +140,9 @@ private:
 	UPROPERTY(EditAnywhere,  BlueprintReadWrite, Category=Weapon, meta = (AllowPrivateAccess = "true"))
 	FWeaponData WeaponData;
 
+	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	FOnWeaponAction RequestReloadDelegate;
+
 	UPROPERTY(VisibleAnywhere, Category = Weapon, meta = (AllowPrivateAccess = "true"))
 	bool IsFiring = false;
 
@@ -143,10 +151,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	int TotalAmmoAmount; // Total reserve ammo for reloading mags
-
+	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	float SpawnOffset = 1.0f;
-
-	
 	float TimeBetweenShoots = 0.f;
 };
