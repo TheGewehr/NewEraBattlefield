@@ -17,6 +17,9 @@ class NEWERABATTLEFIELD_API UFirstPersonHUDWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintNativeEvent)
+	void OnReady();
+	
+	UFUNCTION(BlueprintNativeEvent)
 	void OnHealthUpdated(float CurrentHealth, float MaxHealth);
 
 	UFUNCTION(BlueprintNativeEvent)
@@ -27,4 +30,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent)
 	void OnWeaponChange(const FWeaponData& WeaponData ,int CurrentAmount, int TotalAmount);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	class AFirstPersonCharacter* PlayerOwner = nullptr;
 };

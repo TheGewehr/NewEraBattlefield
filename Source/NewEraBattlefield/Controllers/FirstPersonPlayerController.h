@@ -11,6 +11,7 @@ DECLARE_LOG_CATEGORY_CLASS(LogFPSController, Log, All);
 
 class UInputMappingContext;
 class UInputAction;
+class UFirstPersonHUDWidget;
 /*
  * Base class that controls the input and actions for the FirstPersonCharacter
  */
@@ -24,9 +25,16 @@ public:
 	
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void Tick(float DeltaSeconds) override;
 private:
 	void SetupInputMapping() const;
 	void SetupPlayerReference();
+	
+	void SetupHUD();
+
+	// Binding handling
+	void CreateBindings();
+	void RemoveBindings();
 
 	// Input handling callbacks
 	void HandleMove(const FInputActionValue& Value);
@@ -65,4 +73,23 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Player)
 	class AFirstPersonCharacter* FirstPersonCharacter = nullptr;
+
+	UFUNCTION()
+	void OnWeaponFire(int CurrentAmmo, int TotalAmmo);
+
+	UFUNCTION()
+	void OnWeaponReload(int CurrentAmmo, int TotalAmmo);
+	
+	UFUNCTION()
+	void OnWeaponChange(int CurrentAmmo, int TotalAmmo);
+
+	UFUNCTION()
+	void OnHealthChange(float CurrentHealth, float MaxHealth);
+	
+	// Widgets
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<UUserWidget> MainHUDClass;
+
+	UPROPERTY(VisibleDefaultsOnly)
+	UFirstPersonHUDWidget* MainHUDWidget = nullptr;
 };

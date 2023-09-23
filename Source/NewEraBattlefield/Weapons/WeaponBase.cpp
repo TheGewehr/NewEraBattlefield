@@ -16,6 +16,11 @@ AWeaponBase::AWeaponBase()
 	
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootSceneComponent);
+	Mesh->SetOwnerNoSee(true);
+	
+	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh 1P"));
+	Mesh1P->SetupAttachment(RootSceneComponent);
+	Mesh1P->SetOnlyOwnerSee(true);
 }
 
 // Called when the game starts or when spawned
@@ -42,11 +47,9 @@ bool AWeaponBase::Fire()
 	
 	// Reset the timing
 	TimeBetweenShoots = 0.f;
-
-	UE_LOG(LogTemp, Warning, TEXT("Shotting!"));
-
-	
 	DrawDebugCamera(GetWorld(), GetActorLocation(), GetActorRotation(), 90, 2, FColor::Red);
+	
+	CurrentAmmo--;
 	
 	switch (WeaponData.FireType)
 	{
@@ -54,6 +57,7 @@ bool AWeaponBase::Fire()
 	case EFireType::FProjectile: FireProjectile(); break;
 	}
 
+	
 	
 	if(WeaponData.MuzzleFlashEffect)
 		UGameplayStatics::SpawnEmitterAttached(WeaponData.MuzzleFlashEffect, Mesh, TEXT("Muzzle"));

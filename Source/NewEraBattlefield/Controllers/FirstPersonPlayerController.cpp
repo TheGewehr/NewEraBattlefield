@@ -5,7 +5,10 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Blueprint/UserWidget.h"
 #include "NewEraBattlefield/Characters/FirstPersonCharacter.h"
+#include "NewEraBattlefield/Components/FirstPersonHealthComponent.h"
+#include "NewEraBattlefield/UI/FirstPersonHUDWidget.h"
 
 AFirstPersonPlayerController::AFirstPersonPlayerController()
 {
@@ -29,15 +32,49 @@ void AFirstPersonPlayerController::SetupInputMapping() const
 void AFirstPersonPlayerController::SetupPlayerReference()
 {
 	FirstPersonCharacter = Cast<AFirstPersonCharacter>(GetPawn());
-	//FirstPersonCharacter->PlayerController = this;
+
+	if(MainHUDWidget && FirstPersonCharacter)
+		MainHUDWidget->PlayerOwner = FirstPersonCharacter;
+}
+
+void AFirstPersonPlayerController::SetupHUD()
+{
+	if(MainHUDClass)
+	{
+		MainHUDWidget = CreateWidget<UFirstPersonHUDWidget>(this, MainHUDClass);
+		MainHUDWidget->AddToViewport();
+	}
+}
+
+void AFirstPersonPlayerController::CreateBindings()
+{
+	if(!FirstPersonCharacter)
+		return;
+	FirstPersonCharacter->OnWeaponFireDelegate.AddUObject(this, &AFirstPersonPlayerController::OnWeaponFire);
+	FirstPersonCharacter->OnWeaponReloadDelegate.AddUObject(this, &AFirstPersonPlayerController::OnWeaponReload);
+	FirstPersonCharacter->OnWeaponChangedDelegate.AddUObject(this, &AFirstPersonPlayerController::OnWeaponChange);
+	FirstPersonCharacter->HealthComponent->OnHealthChanged.AddUObject(this, &AFirstPersonPlayerController::OnHealthChange);
+}
+
+void AFirstPersonPlayerController::RemoveBindings()
+{
+	if(!FirstPersonCharacter)
+		return;
+	FirstPersonCharacter->OnWeaponFireDelegate.RemoveAll(this);
+	FirstPersonCharacter->OnWeaponReloadDelegate.RemoveAll(this);
+	FirstPersonCharacter->OnWeaponChangedDelegate.RemoveAll(this);
+	FirstPersonCharacter->HealthComponent->OnHealthChanged.RemoveAll(this);
 }
 
 void AFirstPersonPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	SetupPlayerReference();
 	SetupInputMapping();
+	
+	SetupHUD();
+	SetupPlayerReference();
+	CreateBindings();
 }
 
 void AFirstPersonPlayerController::SetupInputComponent()
@@ -52,6 +89,13 @@ void AFirstPersonPlayerController::SetupInputComponent()
 	Input->BindAction(PickItem_InputAction, ETriggerEvent::Triggered, this, &AFirstPersonPlayerController::HandlePickUpItem);
 	Input->BindAction(Jump_InputAction, ETriggerEvent::Triggered, this, &AFirstPersonPlayerController::HandleJump);
 	Input->BindAction(Reload_InputAction, ETriggerEvent::Triggered, this, &AFirstPersonPlayerController::HandleReload);
+}
+
+void AFirstPersonPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if(!FirstPersonCharacter)
+		SetupPlayerReference();
 }
 
 
@@ -108,4 +152,28 @@ void AFirstPersonPlayerController::HandleReload(const FInputActionValue& Value)
 		return;
 
 	FirstPersonCharacter->Reload();
+}
+
+void AFirstPersonPlayerController::OnWeaponFire(int CurrentAmmo, int TotalAmmo)
+{
+	if(MainHUDWidget)
+		MainHUDWidget->OnWeaponFire(CurrentAmmo);
+}
+
+void AFirstPersonPlayerController::OnWeaponReload(int CurrentAmmo, int TotalAmmo)
+{
+	if(MainHUDWidget)
+		MainHUDWidget->OnWeaponReload(CurrentAmmo, TotalAmmo);
+}
+
+void AFirstPersonPlayerController::OnWeaponChange(int CurrentAmmo, int TotalAmmo)
+{
+	if(MainHUDWidget && FirstPersonCharacter)
+		MainHUDWidget->OnWeaponChange(FirstPersonCharacter->GetCurrentWeaponData(), CurrentAmmo, TotalAmmo);
+}
+
+void AFirstPersonPlayerController::OnHealthChange(float CurrentHealth, float MaxHealth)
+{
+	if(MainHUDWidget)
+		MainHUDWidget->OnHealthUpdated(CurrentHealth, MaxHealth);
 }

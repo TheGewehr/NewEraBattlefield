@@ -6,8 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "FirstPersonHealthComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, CurrentHealth, float, MaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDie);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, float);
+DECLARE_MULTICAST_DELEGATE(FOnDie);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NEWERABATTLEFIELD_API UFirstPersonHealthComponent : public UActorComponent
@@ -25,16 +25,23 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	
 	void TakeDamage(const float DamageAmount);
 	void Heal(const float HealAmount);
+
 	void Die();
-
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	
+	// Resets the component, sets the health to the max health and calls OnHealthChanged delegate
+	void Reset();
+	
 	FOnHealthChanged OnHealthChanged;
-
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
 	FOnDie OnDie;
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetCurrentHealth() const { return CurrentHealth; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetMaxHealth() const { return MaxHealth; }
 	
 private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))

@@ -34,16 +34,18 @@ public:
 	void AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* WeaponToAttach);
 
 	UFUNCTION(BlueprintCallable, Category = Weapon)
-	void Fire();
+	bool Fire();
 
 	UFUNCTION(BlueprintCallable, Category = Weapon)
-	void Reload();
-	
-	FORCEINLINE bool HasWeapon() const { return Weapon != nullptr; }
-	FORCEINLINE AWeaponBase* GetWeapon() const { return Weapon; }
+	bool Reload();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool HasWeapon() const { return Weapon != nullptr; }
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	AWeaponBase* GetWeapon() const { return Weapon; }
 
 	UFUNCTION(BlueprintCallable)
-	void SelectWeapon();
+	bool SelectWeapon();
 private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeaponBase> StartingWeapon;

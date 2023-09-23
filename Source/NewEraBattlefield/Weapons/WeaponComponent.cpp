@@ -41,35 +41,22 @@ void UWeaponComponent::AttachWeapon(AFirstPersonCharacter* Owner, AWeaponBase* W
 	FirstPersonCharacter = Owner;
 }
 
-void UWeaponComponent::Fire()
+bool UWeaponComponent::Fire()
 {
 	if(!Weapon)
-		return;
-	if(Weapon->Fire())
-	{
-		if(!FirstPersonCharacter->OnWeaponFire.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
-			UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponFire but not function was bound!"));
-	}
+		return false;
+	return Weapon->Fire();
 }
 
-void UWeaponComponent::Reload()
+bool UWeaponComponent::Reload()
 {
 	if(!Weapon)
-		return;
-
-	if(Weapon->Reload())
-	{
-		if(!FirstPersonCharacter->OnWeaponReload.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
-			UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponReload but not function was bound!"));
-	}
+		return false;
+	return Weapon->Reload();
 }
 
-void UWeaponComponent::SelectWeapon()
+bool UWeaponComponent::SelectWeapon()
 {
-	if(!FirstPersonCharacter || !Weapon)
-		return;
-	
-	if(!FirstPersonCharacter->OnWeaponChanged.ExecuteIfBound(Weapon->GetCurrentAmmo(), Weapon->GetTotalAmmoAmount()))
-		UE_LOG(LogTemp, Warning, TEXT("Called OnWeaponChanged but not function was bound!"));
+	return FirstPersonCharacter && Weapon;
 }
 

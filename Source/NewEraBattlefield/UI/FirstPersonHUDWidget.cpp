@@ -19,3 +19,7 @@ void UFirstPersonHUDWidget::OnWeaponReload_Implementation(int CurrentAmount, int
 void UFirstPersonHUDWidget::OnWeaponChange_Implementation(const FWeaponData& WeaponData, int CurrentAmount, int TotalAmount)
 {
 }
+
+void UFirstPersonHUDWidget::OnReady_Implementation()
+{
+}

@@ -113,6 +113,7 @@ public:
 
 	
 	USkeletalMeshComponent* GetMesh() const { return Mesh; }
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 private:
 	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	USceneComponent* RootSceneComponent = nullptr;
@@ -120,6 +121,9 @@ private:
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Mesh = nullptr;
 
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	USkeletalMeshComponent* Mesh1P = nullptr;
+	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AProjectileBase> Projectile;
 	

@@ -20,8 +20,7 @@ void UFirstPersonHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	CurrentHealth = MaxHealth;
-	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+	
 }
 
 
@@ -47,5 +46,11 @@ void UFirstPersonHealthComponent::Die()
 {
 	// TODO: Die actions
 	OnDie.Broadcast();
+}
+
+void UFirstPersonHealthComponent::Reset()
+{
+	CurrentHealth = MaxHealth;
+	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
 }
 

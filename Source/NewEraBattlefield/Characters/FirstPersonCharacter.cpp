@@ -6,10 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "../Components/FirstPersonHealthComponent.h"
-#include "GameFramework/GameSession.h"
-#include "Kismet/GameplayStatics.h"
 #include "NewEraBattlefield/Controllers/FirstPersonPlayerController.h"
-#include "NewEraBattlefield/UI/FirstPersonHUD.h"
+#include "NewEraBattlefield/UI/FirstPersonHUDWidget.h"
 
 // Sets default values
 AFirstPersonCharacter::AFirstPersonCharacter()
@@ -54,29 +52,60 @@ void AFirstPersonCharacter::SetupWeaponAttachments()
 	const FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	if(AWeaponBase* Weapon = PrimaryWeaponComponent->GetWeapon())
 	{
-		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint"))))
-			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
 		Weapon->SetOwner(this);
+
+		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh(), AttachmentRules, FName(TEXT("GripPoint"))))
+			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
+		
+		if(!Weapon->GetMesh1P()->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint"))))
+			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
 	}
 	if(AWeaponBase* Weapon = SecondaryWeaponComponent->GetWeapon())
 	{
-		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint"))))
-			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
 		Weapon->SetOwner(this);
+
+		if(!Weapon->GetMesh()->AttachToComponent(this->GetMesh(), AttachmentRules, FName(TEXT("GripPoint"))))
+			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
+		
+		if(!Weapon->GetMesh1P()->AttachToComponent(this->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint"))))
+			UE_LOG(LogTemp, Warning, TEXT("Couldn't attach weapon to the player"));
+		
 		Weapon->GetMesh()->SetVisibility(false, true);
+		Weapon->GetMesh1P()->SetVisibility(false, true);
 	}
+}
+
+void AFirstPersonCharacter::SetupBindings()
+{
+	HealthComponent->Reset();
+}
+void AFirstPersonCharacter::SetupDefaultWeapons()
+{
+	SecondaryWeaponComponent->CreateDefaultWeapon();
+	PrimaryWeaponComponent->CreateDefaultWeapon();
+	SelectedWeaponComponent = PrimaryWeaponComponent;
+
 }
 
 // Called when the game starts or when spawned
 void AFirstPersonCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	SetupBindings();
+	SetupDefaultWeapons();
 	SetupWeaponAttachments();
 
+	if(const AFirstPersonPlayerController* FPSController = Cast<AFirstPersonPlayerController>(GetController()))
+	{
+		if(FPSController->MainHUDWidget)
+			FPSController->MainHUDWidget->OnReady();
+	}
+}
 
-	SelectedWeaponComponent = PrimaryWeaponComponent;
-	SecondaryWeaponComponent->CreateDefaultWeapon();
-	PrimaryWeaponComponent->CreateDefaultWeapon();
+void AFirstPersonCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
 }
 
 // Called every frame
@@ -86,23 +115,7 @@ void AFirstPersonCharacter::Tick(float DeltaTime)
 
 }
 
-void AFirstPersonCharacter::NotifyControllerChanged()
-{
-	Super::NotifyControllerChanged();
 
-	if(const AFirstPersonPlayerController* PlayerController = Cast<AFirstPersonPlayerController>(GetController()))
-	{
-		if(AFirstPersonHUD* HUD = Cast<AFirstPersonHUD>(PlayerController->GetHUD()))
-		{
-			
-
-			
-			
-		
-				
-		}
-	}
-}
 
 void AFirstPersonCharacter::Move(const FVector2D& Movement)
 {
@@ -127,7 +140,12 @@ void AFirstPersonCharacter::Shoot()
 	if(!SelectedWeaponComponent)
 		return;
 
-	SelectedWeaponComponent->Fire();
+	// TODO: Change this in the future
+	if(SelectedWeaponComponent->Fire())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Broadcasting Weapon fire!"));
+		OnWeaponFireDelegate.Broadcast(SelectedWeaponComponent->GetWeapon()->GetCurrentAmmo(), SelectedWeaponComponent->GetWeapon()->GetTotalAmmoAmount());
+	}
 }
 
 void AFirstPersonCharacter::Aim()
@@ -146,10 +164,19 @@ void AFirstPersonCharacter::Jump()
 
 void AFirstPersonCharacter::Reload()
 {
+	if(!SelectedWeaponComponent)
+		return;
+
+	// TODO: Change this in the future
+	if(SelectedWeaponComponent->Reload())
+	{
+		OnWeaponReloadDelegate.Broadcast(SelectedWeaponComponent->GetWeapon()->GetCurrentAmmo(), SelectedWeaponComponent->GetWeapon()->GetTotalAmmoAmount());
+	}		
 }
 
+
 float AFirstPersonCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
-	AController* EventInstigator, AActor* DamageCauser)
+                                        AController* EventInstigator, AActor* DamageCauser)
 {
 	HealthComponent->TakeDamage(DamageAmount);
 	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
