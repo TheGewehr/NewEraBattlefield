@@ -16,30 +16,26 @@ class NEWERABATTLEFIELD_API AProjectileBase : public AActor
 public:	
 	// Components
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UProjectileMovementComponent* ProjectileMovement;
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UCapsuleComponent* CapsuleComponent;
 
 	// Properties
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
-	float Damage;
+	float Damage;	
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
-	//float SpeedInMetersPerSecond;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
+	float SpeedInMetersPerSecond;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float WeightInKg;
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+	UProjectileMovementComponent* ProjectileMovement;
+	
 	// Functions
 	AProjectileBase();
 
 	virtual void BeginPlay() override;
 
-private:
-
-	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"), Category = "Projectile")
-	float SpeedInMetersPerSecond;
 };
 
 /*

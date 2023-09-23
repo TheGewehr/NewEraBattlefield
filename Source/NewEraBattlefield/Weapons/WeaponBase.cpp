@@ -37,6 +37,7 @@ void AWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TimeBetweenShoots += DeltaTime;
+
 }
 
 bool AWeaponBase::Fire()
@@ -85,7 +86,16 @@ bool AWeaponBase::Reload()
 
 void AWeaponBase::FireHitScan()
 {
+
+	AHitscanBase* HitscanInstance = GetWorld()->SpawnActor<AHitscanBase>(Hitscan);
+
+	// Now that you have an instance, you can access its members.
+	if (HitscanInstance)
+	{
+		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset,GetActorForwardVector());
+	}
 }
+
 
 void AWeaponBase::FireProjectile()
 {
@@ -93,13 +103,19 @@ void AWeaponBase::FireProjectile()
 	{
 		// Get the spawn location and rotation in front of the weapon
 		FVector SpawnLocation = GetActorLocation() + GetActorForwardVector() * SpawnOffset;
-		FRotator SpawnRotation = GetActorRotation();
+		FRotator SpawnRotation = GetActorRotation().Add(0.f, 90.f, 0.f) ;
 
 		// Spawn the projectile at the calculated location and rotation
 		//TSubclassOf<AProjectileBase>* SpawnedProjectile = GetWorld()->SpawnActor<TSubclassOf<AProjectileBase>>(Projectile, SpawnLocation, SpawnRotation, FActorSpawnParameters());
 		//AMyBlueprintActor* SpawnedActor = GetWorld()->SpawnActor<AMyBlueprintActor>(AMyBlueprintActor::StaticClass(), SpawnLocation, SpawnRotation);
 		
 		AProjectileBase* SpawnedProjectile = GetWorld()->SpawnActor<AProjectileBase>(Projectile,SpawnLocation, SpawnRotation, FActorSpawnParameters());
+
+		UE_LOG(LogTemp, Warning, TEXT("Projectile Fired!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Projectile variable is null!"));
 	}
 }
 

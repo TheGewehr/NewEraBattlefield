@@ -7,15 +7,24 @@
 AProjectileBase::AProjectileBase()
 {
 	// Initialize Capsule Component
-	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));	
 	RootComponent = CapsuleComponent;
+	
+	//FRotator CurrentRotation = CapsuleComponent->GetComponentRotation();
+	//FRotator NewRotation = CurrentRotation.Add(0.f, 90.f, 0.f);
+	//CapsuleComponent->SetWorldRotation(NewRotation);
+	//CapsuleComponent->
+
+	//FRotator CurrentRotation2 = RootComponent->GetComponentRotation();
+	//FRotator NewRotation2 = CurrentRotation2.Add(0.f, 90.f, 0.f);
+	//RootComponent->SetWorldRotation(NewRotation2);
 
 	// Initialize Projectile Movement Component
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 	
 	// Initialize properties
 	Damage = 100.0f;
-	SpeedInMetersPerSecond = 90.0f; // 900 m/s
+	SpeedInMetersPerSecond = 900.0f; // 900 m/s
 	WeightInKg = 0.01f; // 10 grams in kg
 
 	// Convert speed to cm/s for Unreal Engine

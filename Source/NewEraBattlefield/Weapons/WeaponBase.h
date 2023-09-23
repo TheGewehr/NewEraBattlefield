@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Sound/SoundCue.h"
 #include "../Projectiles/ProjectileBase.h"
+#include "../Projectiles/HitscanBase.h"
 #include "WeaponBase.generated.h"
 
 UENUM()
@@ -72,7 +73,7 @@ struct FWeaponData
 	USoundCue* FireSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UParticleSystem* MuzzleFlashEffect;
+	UParticleSystem* MuzzleFlashEffect;	
 };
 
 
@@ -126,6 +127,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<AProjectileBase> Projectile;
+
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	TSubclassOf<AHitscanBase> Hitscan;
 	
 	// Weapon data should be initialized when creating the blueprint
 	UPROPERTY(EditAnywhere,  BlueprintReadWrite, Category=Weapon, meta = (AllowPrivateAccess = "true"))
