@@ -27,16 +27,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	float WeightInKg;
-
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile")
+	UProjectileMovementComponent* ProjectileMovement;
+	
 	// Functions
 	AProjectileBase();
 
 	virtual void BeginPlay() override;
 
-private:	
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UProjectileMovementComponent* ProjectileMovement;
 };
 
 /*

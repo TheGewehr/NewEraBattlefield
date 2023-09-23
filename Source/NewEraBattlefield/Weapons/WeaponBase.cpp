@@ -32,6 +32,7 @@ void AWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	TimeBetweenShoots += DeltaTime;
+
 }
 
 bool AWeaponBase::Fire()
@@ -81,7 +82,16 @@ bool AWeaponBase::Reload()
 
 void AWeaponBase::FireHitScan()
 {
+
+	AHitscanBase* HitscanInstance = GetWorld()->SpawnActor<AHitscanBase>(Hitscan);
+
+	// Now that you have an instance, you can access its members.
+	if (HitscanInstance)
+	{
+		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset,GetActorForwardVector());
+	}
 }
+
 
 void AWeaponBase::FireProjectile()
 {
