@@ -86,7 +86,7 @@ bool AWeaponBase::Reload()
 
 bool AWeaponBase::RequestReload()
 {
-	return ;
+	return true;
 }
 
 

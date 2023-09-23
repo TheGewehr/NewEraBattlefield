@@ -140,7 +140,7 @@ private:
 	UPROPERTY(EditAnywhere,  BlueprintReadWrite, Category=Weapon, meta = (AllowPrivateAccess = "true"))
 	FWeaponData WeaponData;
 
-	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintCallable, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	FOnWeaponAction RequestReloadDelegate;
 
 	UPROPERTY(VisibleAnywhere, Category = Weapon, meta = (AllowPrivateAccess = "true"))

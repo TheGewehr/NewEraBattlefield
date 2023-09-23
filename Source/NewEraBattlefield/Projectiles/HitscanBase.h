@@ -64,9 +64,6 @@ private:
 
 	float CurrentDeltaTime = 0.0f;
 
-	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
-	FHitscanData InitialHitscanData;
-
 	FHitscanData SimulationHitscanData;
 
 public:	
@@ -74,5 +71,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void StartHitscan(FVector StartPoint, FVector ForwardVector);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HitscanData")
+	FHitscanData InitialHitscanData;	
 
 };

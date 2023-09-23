@@ -44,10 +44,31 @@ bool AHitscanBase::SimulateHitscanStep()
 
 	bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CurrentHitscanPosition, EndPoint, ECC_Visibility, CollisionParams);
 
+	DrawDebugLine(
+	GetWorld(),
+	CurrentHitscanPosition,
+	EndPoint,
+	FColor::Green,
+	false,  // Not persistent; the line will disappear after the next frame
+	1,  // LifeTime
+	0,  // DepthPriority
+	1  // Thickness
+	);
+
 	if (bHit)
 	{
 		// Handle hit logic
 		AActor* HitActor = HitResult.GetActor();
+		
+		DrawDebugPoint(
+			GetWorld(),
+			HitResult.ImpactPoint,
+			10,  // Size
+			FColor::Red,
+			false,  // Not persistent
+			1  // LifeTime
+		);
+		
 
 		if (HitActor && HitResult.GetComponent()->IsSimulatingPhysics())
 		{
