@@ -38,10 +38,25 @@ void AWeaponBase::Tick(float DeltaTime)
 
 	TimeBetweenShoots += DeltaTime;
 
+	
+
+	
+
 }
 
 bool AWeaponBase::Fire()
 {
+	DrawDebugLine(
+	GetWorld(),
+	GetOwner()->GetActorLocation(), // Does not get it well GetActorLocation()
+	GetActorForwardVector()*3,
+	FColor::Blue,
+	false,  // Not persistent; the line will disappear after the next frame
+	3,  // LifeTime
+	0,  // DepthPriority
+	1  // Thickness
+	);
+	
 	// Check if the weapon has enough ammo
 	if(CurrentAmmo <= 0)
 		return false;
@@ -98,7 +113,7 @@ void AWeaponBase::FireHitScan()
 	// Now that you have an instance, you can access its members.
 	if (HitscanInstance)
 	{
-		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset,GetActorForwardVector());
+		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset, GetActorForwardVector()); // this->GetOwner()->GetActorForwardVector()
 	}
 }
 
