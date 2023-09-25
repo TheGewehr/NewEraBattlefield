@@ -36,11 +36,7 @@ void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TimeBetweenShoots += DeltaTime;
-
-	
-
-	
+	TimeBetweenShoots += DeltaTime;	
 
 }
 
@@ -48,14 +44,17 @@ bool AWeaponBase::Fire()
 {
 	DrawDebugLine(
 	GetWorld(),
-	GetOwner()->GetActorLocation(), // Does not get it well GetActorLocation()
-	GetActorForwardVector()*3,
+	GetActorLocation() + GetActorForwardVector() * SpawnOffset, // Does not get it well GetActorLocation()
+	GetActorForwardVector(),
 	FColor::Blue,
 	false,  // Not persistent; the line will disappear after the next frame
 	3,  // LifeTime
 	0,  // DepthPriority
 	1  // Thickness
 	);
+
+	//FVector ForwardVector = GetActorForwardVector();
+	//UE_LOG(LogTemp, Warning, TEXT("Forward Vector: X=%f, Y=%f, Z=%f"), ForwardVector.X, ForwardVector.Y, ForwardVector.Z);
 	
 	// Check if the weapon has enough ammo
 	if(CurrentAmmo <= 0)
@@ -113,8 +112,15 @@ void AWeaponBase::FireHitScan()
 	// Now that you have an instance, you can access its members.
 	if (HitscanInstance)
 	{
-		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset, GetActorForwardVector()); // this->GetOwner()->GetActorForwardVector()
+		//FVector MuzzleLocation = Mesh->GetSocketLocation("Muzzle");
+		//FVector MuzzleDirection = Mesh->GetSocketRotation("Muzzle").Vector();
+		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset, Mesh->GetSocketRotation("Muzzle").Vector());
+		//HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset, GetActorForwardVector());
+		// GetActorForwardVector()
+		// GetOwner()->GetActorForwardVector()
 	}
+
+	
 }
 
 
