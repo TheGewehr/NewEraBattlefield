@@ -56,7 +56,7 @@ private:
 	FVector CurrentForwardVector;
 	FVector CurrentHitscanPosition;
 
-	FVector Gravity = FVector(0, 0, -9.81);
+	FVector Gravity = FVector(0, 0, -9.81); 
 	FVector Wind = FVector(0, 0, 0); 
 	FVector Drag = FVector(0, 0, 0);
 
