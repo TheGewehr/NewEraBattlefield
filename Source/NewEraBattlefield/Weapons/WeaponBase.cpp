@@ -2,6 +2,7 @@
 
 
 #include "WeaponBase.h"
+#include "WeaponComponent.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -144,7 +145,11 @@ void AWeaponBase::FireHitScan()
 	{
 		//FVector MuzzleLocation = Mesh->GetSocketLocation("Muzzle");
 		//FVector MuzzleDirection = Mesh1P->GetSocketRotation("Muzzle").Vector();
-		HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() + SpawnOffset, GetActorForwardVector());
+		
+		UWeaponComponent* WeaponComponent = GetOwner()->FindComponentByClass<UWeaponComponent>();
+		USceneComponent* WeaponRootComponent = WeaponComponent->GetOwner()->GetRootComponent();
+		FVector WeaponWorldLocation = WeaponRootComponent->GetComponentLocation();
+		HitscanInstance->StartHitscan(WeaponWorldLocation + SpawnOffset, GetActorForwardVector());
 		//HitscanInstance->StartHitscan(GetActorLocation() + GetActorForwardVector() * SpawnOffset, GetActorForwardVector());
 		// GetActorForwardVector()
 		// GetOwner()->GetActorForwardVector()

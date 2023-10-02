@@ -7,6 +7,7 @@
 #include "Sound/SoundCue.h"
 #include "../Projectiles/ProjectileBase.h"
 #include "../Projectiles/HitscanBase.h"
+
 #include "WeaponBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponAction);
